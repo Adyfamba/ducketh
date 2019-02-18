@@ -1,0 +1,25 @@
+{
+  "name": "ducketh",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "chai": "^4.2.0",
+    "openzeppelin-solidity": "^2.1.2",
+    "truffle": "^5.0.4",
+    "underscore": "^1.9.1",
+    "web3": "^1.0.0-beta.46",
+    "web3-utils": "^1.0.0-beta.46"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC"
+}
