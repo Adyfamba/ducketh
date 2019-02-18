@@ -39,6 +39,24 @@ function getClassStrict(bytecode) {
   return null;
 }
 
+// Guesses the contract class by returning the one with the most matching functions
+function getClassGuess(bytecode) {
+  let abis = _.map(supportedClasses, (e) => {
+    return require(`./abi/${classToABIMap[e]}`);
+  });
+  let matchingFunctionCounts = _.map(abis, (abi) => {
+    let functionSelectors = getFunctionSelectors(abi);
+    return countConformingFunctions(bytecode, functionSelectors);
+  });
+  let matchingFunctionTotals = _.map(abis, (abi) => {
+    return getFunctionSelectors(abi).length;
+  });
+  let bestMatchCount = _.max(matchingFunctionCounts);
+  let bestMatchIndex = _.indexOf(matchingFunctionCounts, bestMatchCount);
+  return [supportedClasses[bestMatchIndex], bestMatchCount / matchingFunctionTotals[bestMatchIndex]];
+
+}
+
 function getFunctionSelectors(abi) {
   return _.map(abi.abi, (e) => {
     // TODO: special handling for struct
@@ -54,18 +72,26 @@ function getFunctionSelectors(abi) {
   });
 }
 
-function checkConforms(bytecode, functionSelectors) {
+
+function countConformingFunctions(bytecode, functionSelectors) {
   return _.reduce(functionSelectors, (memo, e) => {
     let matches = bytecode.match(e.selector.substring(2));
     if (matches !== null) {
-      return memo && true;
+      return memo + 1;
     } else {
-      return false;
+      return memo;
     }
-  });
+  }, 0);
+}
+
+
+function checkConforms(bytecode, functionSelectors) {
+  return countConformingFunctions(bytecode, functionSelectors) === functionSelectors.length;
 }
 
 
 module.exports = {
-  getClassStrict: getClassStrict
+  getClass: getClassStrict,
+  getClassStrict: getClassStrict,
+  getClassGuess: getClassGuess
 };

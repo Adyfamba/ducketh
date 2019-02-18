@@ -29,3 +29,25 @@ describe('getClassStrict', function() {
   });
 
 });
+
+describe('getClassGuess', function() {
+
+  it('', function() {
+    const bytecode = bytecodeExamples['DAIBytecode'];
+    const result = ducketh.getClassStrict(bytecode);
+    const expected = null;
+    console.log('reult', ducketh.getClassGuess(bytecode));
+    assert.fail()
+  });
+
+  it('', function() {
+    // TODO: stub supportedClasses to only be 8721
+    ducketh.supportedClasses = ['ERC721'];
+    const bytecode = bytecodeExamples['DAIBytecode'];
+    const result = ducketh.getClassStrict(bytecode);
+    const expected = null;
+    console.log('reult', ducketh.getClassGuess(bytecode));
+    assert.fail()
+  });
+
+});
